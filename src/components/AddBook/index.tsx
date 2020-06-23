@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as API from '../../services/axios';
 import Loader from '../shared/loader';
 import TransparentLoader from '../shared/TransparentLoader';
+import { getBookById, addBook } from "../../services/redux/actions";
 
 function AddBook(props: any) {
   let history = useHistory();
@@ -16,12 +17,15 @@ function AddBook(props: any) {
   const [message, setMessage] = useState<string>('');
 
 
-  function updateBook(detail: Book) {
-    setSubmit(true);
-    dispatch(API.addNewBook(detail));
-    setTimeout(() => {
-      history.push('/list');
-    }, 2000)
+  async function updateBook(detail: Book) {
+    let res = await API.addNewBook(detail);
+    if (res) {
+      dispatch(addBook(res));
+      dispatch(getBookById(res));
+      history.push('/books/' + book.id);
+    } else {
+      setSubmit(false)
+    }
   }
 
 

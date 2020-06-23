@@ -18,17 +18,17 @@ function App() {
     async function getToken(): Promise<any> {
       const user: any = firebase.auth().currentUser;
       user.getIdToken(true).then((idToken: string) => {
-        dispatch(isLoggedIn(true));
+        localStorage.setItem('token', idToken);
+        localStorage.setItem('uid', user.uid);
         dispatch(token(idToken));
         dispatch(uid(user.uid));
-        localStorage.setItem('token', idToken);
-        localStorage.setItem('uid', user.uid)
-        setLoading(false)
+        dispatch(isLoggedIn(true));
+        setLoading(false);
       }).catch((err: any) => console.log(err));
     }
     async function checkAuthentication() {
-      firebase.auth().onAuthStateChanged((user: any) => {
-        if (user) {
+      firebase.auth().onAuthStateChanged(async (user: any) => {
+        if (user && await localStorage.getItem('token')) {
           getToken();
         } else {
           setLoading(false)

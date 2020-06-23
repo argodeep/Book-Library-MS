@@ -4,9 +4,9 @@ import { Book } from '../../services/models/book';
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import * as API from '../../services/axios';
-import { debounce } from 'throttle-debounce';
+// import { debounce } from 'throttle-debounce';
 import Loader from '../shared/loader';
-import { getBookById } from '../../services/redux/actions';
+import { getBookById, listBooks } from '../../services/redux/actions';
 
 function ListBooks() {
   let history = useHistory();
@@ -26,22 +26,21 @@ function ListBooks() {
     return color;
   }
 
-  function getBooks(query: string = ''): void {
-    dispatch(API.getAllBooks(query));
+  async function getBooks(query: string = '') {
+    let res: any = await API.getAllBooks(query);
+    dispatch(listBooks(res));
+    setLoading(false)
   }
 
-  let handleSearch = debounce(500, (value: string) => {
+  let handleSearch = (value: string) => {
     if (value) {
       getBooks('?keyword=' + value);
     } else {
       getBooks('')
     }
-  })
+  }
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
     getBooks('');
   }, [])
 
@@ -54,8 +53,9 @@ function ListBooks() {
   return (
     <div className="layout">
       <div>
-        <input type="text" value={keyword} onChange={(event) => {
+        <input type="text" value={keyword} onChange={(event: any) => {
           setKeyword(event.target.value)
+          // debounce(500, handleSearch(event.target.value));
           handleSearch(event.target.value)
         }} placeholder="Search by book name & author" />
         <span className="clear" onClick={() => {
@@ -67,8 +67,8 @@ function ListBooks() {
         {
           books.map((book: Book, index: number) =>
             <div className="book-card" key={index} onClick={() => {
-               dispatch(getBookById(book))
-               history.push('/books/' + book.id)
+              dispatch(getBookById(book))
+              history.push('/books/' + book.id)
             }}>
               <div className="cover" style={{ backgroundColor: getRandomColor(), color: '#fff' }}>
                 {book.name.slice(0, 1)}

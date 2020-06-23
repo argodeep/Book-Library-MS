@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as API from '../../services/axios';
 import Loader from '../shared/loader';
 import TransparentLoader from '../shared/TransparentLoader';
+import { getBookById, editBook } from "../../services/redux/actions";
 
 function EditBook(props: any) {
   const [id, setId] = useState(props.match.params.id);
@@ -17,24 +18,29 @@ function EditBook(props: any) {
   const [isSubmitting, setSubmit] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
 
-  function getBook(): void {
+  async function getBook() {
     if (!book.id) {
-      dispatch(API.fetchBookById(id));
+      let res: any = await API.fetchBookById(id)
+      dispatch(getBookById(res));
+      setLoading(false)
+    } else {
+      setLoading(false)
     }
   }
 
-  function updateBook(detail: Book) {
+  async function updateBook(detail: Book) {
     setSubmit(true);
-    dispatch(API.updateBook(detail));
-    setTimeout(() => {
+    let res = await API.updateBook(detail);
+    if (res) {
+      dispatch(editBook(res));
+      dispatch(getBookById(res));
       history.push('/books/' + book.id);
-    }, 2000)
+    } else {
+      setSubmit(false)
+    }
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000);
     getBook();
   }, [id])
 

@@ -4,7 +4,7 @@ import './style.css';
 import Logo from "../../assets/logo.svg";
 import firebase from '../../services/firebase'
 import TransparentLoader from '../shared/TransparentLoader';
-import { isLoggedIn } from '../../services/redux/actions'
+import { isLoggedIn, token, uid } from '../../services/redux/actions'
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -20,7 +20,7 @@ function Login() {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((user: any) => {
           if (user) {
-            dispatch(isLoggedIn(true));
+            getToken();
           }
         })
         .catch((error: any) => {
@@ -30,6 +30,18 @@ function Login() {
     } else {
       setErrorText('Enter email & password both')
     }
+  }
+
+  async function getToken(): Promise<any> {
+    const user: any = firebase.auth().currentUser;
+
+    user.getIdToken(true).then((idToken: string) => {
+      localStorage.setItem('token', idToken);
+      localStorage.setItem('uid', user.uid);
+      dispatch(token(idToken));
+      dispatch(uid(user.uid));
+      dispatch(isLoggedIn(true));
+    }).catch((err: any) => console.log(err));
   }
 
   return (

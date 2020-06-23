@@ -1,69 +1,57 @@
-import { listBooks, getBookById, editBook, addBook } from "../redux/actions";
 import axios from "axios";
 import { Book } from "../models/book";
 
 const API = {
-  backend: "REPLACE_WITH_BACKEND_API",
+  backend: "BACKEND_API", // Change here
 };
 
-const token = localStorage.getItem('token');
-const uid = localStorage.getItem('uid');
+let getAuthHeaders = async () => {
+  const token = await localStorage.getItem('token');
+  const uid = await localStorage.getItem('uid');
 
-const config = {
-  headers: {
-    "x-access-token": token,
-    "x-access-uid": uid
+  const config = {
+    headers: {
+      "x-access-token": token,
+      "x-access-uid": uid
+    }
   }
+  return config
 }
 
-function getAllBooks(query: string) {
-  return (dispatch: any) => {
-    axios.get(API.backend + '/list' + query, config)
-      .then((response: any) => {
-        dispatch(listBooks(response.data.data));
-      })
-      .catch((error) => {
-        dispatch(listBooks([]));
-      });
-  };
+let getAllBooks = async (query: string) => {
+  const config = await getAuthHeaders();
+  let res = await axios.get(API.backend + '/list' + query, config);
+  if (res.status === 200) {
+    return res.data.data
+  }
+  return []
 }
 
-function fetchBookById(id: string) {
-  return (dispatch: any) => {
-    axios.get(API.backend + '/books/' + id, config)
-      .then((response: any) => {
-        dispatch(getBookById(response.data.data));
-      })
-      .catch((error) => {
-        dispatch(getBookById(error));
-      });
-  };
+let fetchBookById = async (id: string) => {
+  const config = await getAuthHeaders();
+  let res = await axios.get(API.backend + '/books/' + id, config);
+  if (res.status === 200) {
+    return res.data.data
+  }
+  return null
 }
 
-function updateBook(book: Book) {
-  return (dispatch: any) => {
-    axios.put(API.backend + '/books/' + book.id, book, config)
-      .then((response: any) => {
-        dispatch(editBook(response.data.data));
-        dispatch(getBookById(response.data.data));
-      })
-      .catch((err: any) => {
-        dispatch(editBook('Not Saved'));
-      });
-  };
+let updateBook = async (book: Book) => {
+  const config = await getAuthHeaders();
+  let res = await axios.put(API.backend + '/books/' + book.id, book, config)
+  if (res.status === 200) {
+    return res.data.data
+  }
+  return null
 }
 
-function addNewBook(book: Book) {
-  return (dispatch: any) => {
-    axios.post(API.backend + '/books/add', book, config)
-      .then((response: any) => {
-        dispatch(addBook(response.data.data));
-        dispatch(getBookById(response.data.data));
-      })
-      .catch((err: any) => {
-        dispatch(addBook('Not Added'));
-      });
-  };
+let addNewBook = async (book: Book) => {
+  const config = await getAuthHeaders();
+  let res = await axios.post(API.backend + '/books/add', book, config);
+  if (res.status === 200) {
+    return res.data.data
+  }
+  return null
 }
 
 export { getAllBooks, fetchBookById, updateBook, addNewBook }

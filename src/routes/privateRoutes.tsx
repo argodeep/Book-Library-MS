@@ -15,11 +15,11 @@ function PrivateRoutes(props: any) {
   return (
     <Router>
       <Switch>
+        <Redirect from="/login" to="/list" />
         <Route path="/list" exact={true} component={ListBooks} />
         <Route path="/books/add" exact={true} component={AddBooK} />
         <Route path="/books/:id" exact={true} component={Viewook} />
         <Route path="/books/:id/edit" exact={true} component={EditBook} />
-        <Redirect from="/login" to="/list" />
         <Redirect from="/" to="/list" />
         <Route path="*" exact={true} component={NotFound} />
       </Switch>

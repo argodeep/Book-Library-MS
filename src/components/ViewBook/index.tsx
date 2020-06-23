@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import * as API from '../../services/axios';
 import Loader from '../shared/loader';
+import { getBookById } from '../../services/redux/actions';
 
 function ViewBook(props: any) {
   let history = useHistory();
@@ -23,16 +24,17 @@ function ViewBook(props: any) {
     return color;
   }
 
-  function getBook(): void {
+  async function getBook() {
     if (!book.id) {
-      dispatch(API.fetchBookById(id));
+      let res: any = await API.fetchBookById(id)
+      dispatch(getBookById(res));
+      setLoading(false)
+    } else {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000);
     getBook();
   }, [id])
 
