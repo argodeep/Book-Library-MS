@@ -1,0 +1,31 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    /* width: 100%; */
+    font-size: 25px;
+    box-shadow: 0 .125rem .25rem #00000013!important;
+}
+
+.header img {
+    height: 40px;
+    margin-right: 16px;
+}
+
+
+.header .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1140px;
+}
+
+
+.header .content .brand {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+}
