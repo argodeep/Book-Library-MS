@@ -15,7 +15,7 @@
 * add firebase config to `src\services\firebase\index.tsx`
 * add front end url to `src\.env`
 * add backend api to `src\services\axios\index.tsx`
-* To build the application `yarn test` Builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
+* To build the application `yarn build` Builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
 
 Your app is ready to be deployed!
 
@@ -27,3 +27,4 @@ Your app is ready to be deployed!
 * `/books/:id/edit` - Edit particular book details.
 
 [View It's Back-End Project](https://github.com/argodeep/NodejS-Backend-Book_library)
+
