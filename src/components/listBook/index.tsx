@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as API from '../../services/axios';
 // import { debounce } from 'throttle-debounce';
 import Loader from '../shared/loader';
-import { getBookById, listBooks } from '../../services/redux/actions';
+import { getBookById, listBooks} from '../../services/redux/actions';
 
 function ListBooks() {
   let history = useHistory();
@@ -83,7 +83,9 @@ function ListBooks() {
           books.length === 0 && <p style={{ textAlign: 'center', width: '100%' }}>No Books Found</p>
         }
       </div>
-      <button type="button" className="fab" onClick={() => history.push('/books/add')}>+</button>
+      <button type="button" className="fab" onClick={() => {
+        history.push('/books/add');
+      }}>+</button>
     </div>
   );
 }

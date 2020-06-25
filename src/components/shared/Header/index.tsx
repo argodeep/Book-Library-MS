@@ -19,6 +19,7 @@ function Header() {
     firebase.auth().signOut();
     dispatch(isLoggedIn(false));
     dispatch(token(null));
+    localStorage.clear();
     window.location.reload();
   }
 

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './style.css';
 import BookModify from '../shared/bookDetailsModify';
 import { Book } from '../../services/models/book';
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import * as API from '../../services/axios';
-import Loader from '../shared/loader';
 import TransparentLoader from '../shared/TransparentLoader';
 import { getBookById, addBook } from "../../services/redux/actions";
 
@@ -38,7 +37,7 @@ function AddBook(props: any) {
   return (
     <div>
       <h3>Add new Book</h3>
-      <BookModify onSubmit={(detail: Book) => updateBook(detail)} name={book.name || ''} description={book.description || ''} author={book.author || ''} count={book.count || ''} />
+      <BookModify onSubmit={(detail: Book) => updateBook(detail)} name={''} description={''} author={''} count={''} />
     </div>
   );
 }

@@ -34,7 +34,6 @@ function Login() {
 
   async function getToken(): Promise<any> {
     const user: any = firebase.auth().currentUser;
-
     user.getIdToken(true).then((idToken: string) => {
       localStorage.setItem('token', idToken);
       localStorage.setItem('uid', user.uid);
