@@ -26,7 +26,7 @@ Your app is ready to be deployed!
 * `/books/:id/` - View particular book details.
 * `/books/:id/edit` - Edit particular book details.
 
-[View It's Back-End Project](https://github.com/argodeep/NodejS-Backend-Book_library)
+[View It's Back-End Project](https://github.com/argodeep/Book-Library-NodeJS)
 
 ## Screenshots
 
